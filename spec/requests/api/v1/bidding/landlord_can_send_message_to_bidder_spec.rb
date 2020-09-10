@@ -1,20 +1,20 @@
-RSpec.describe '', type: :request do
-  let!(:landlord) { create(:user)}
-  let!(:landlord_credentials) { landlord.create_new_auth_token }
-  let!(:landlord_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(landlord_credentials) }
-  let!(:bidder) { create(:user)}
+# frozen_string_literal: true
 
-  let!(:listing) { create(:listing, landlord_id: landlord.id) }
-  let!(:bid) { create(:bidding, listing_id: listing.id, user_id: bidder.id)}
+RSpec.describe 'POST /api/v1/biddings/:bidding_id/messages', type: :request do
+  let!(:landlord_headers) do
+    @landlord = create(:user)
+    { HTTP_ACCEPT: 'application/json' }.merge!(@landlord.create_new_auth_token)
+  end
+  let!(:listing) { create(:listing, landlord: @landlord) }
+  let!(:bid) { create(:bidding, listing: listing, user: create(:user) ) }
 
   before do
     post "/api/v1/biddings/#{bid.id}/messages",
-           params: {
-             message: {
-               body: "This sounds interesting....",
-             }
-           }, headers: landlord_headers
-
+         params: {
+           message: {
+             body: 'This sounds interesting....'
+           }
+         }, headers: landlord_headers
   end
 
   it 'is expected to respond with 201' do
