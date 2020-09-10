@@ -1,8 +1,10 @@
-require  'coveralls'
+# frozen_string_literal: true
+
+require 'coveralls'
 Coveralls.wear_merged!('rails')
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 require 'spec_helper'
 
@@ -21,8 +23,10 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
   config.include FactoryBot::Syntax::Methods
-  config.include(Shoulda::Matchers::ActiveRecord, type: :model)
-  config.include ResponseJSON
+  config.include Shoulda::Matchers::ActiveRecord, type: :model
+  config.include ResponseJSON, type: :request
+  config.include ActionCableHelpers, type: :request
+
   config.filter_gems_from_backtrace('rack', 'railties', 'bootsnap', 'factory_bot_rails')
 end
 
