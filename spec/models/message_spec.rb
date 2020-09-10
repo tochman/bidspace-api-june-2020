@@ -1,5 +1,12 @@
-require 'rails_helper'
 
 RSpec.describe Message, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let!(:bidding) { create(:bidding ) }
+
+  describe 'broadcast' do
+    it 'should broadcast after creation' do
+      expect {
+        create(:message, bidding: bidding)
+      }.to have_broadcasted_to("biddings_channel_#{bidding.id}")
+    end
+  end
 end
