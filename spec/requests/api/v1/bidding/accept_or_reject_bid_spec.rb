@@ -20,7 +20,8 @@ RSpec.describe 'PUT /api/v1/biddings', type: :request do
     )
   end
 
-  let!(:bid) { create(:bidding, listing_id: listing.id, user_id: subscriber.id) }
+  let!(:bid) { create(:bidding, listing_id: listing.id, user_id: subscriber.id)}
+  let!(:bid2) { create(:bidding, listing_id: listing.id, user_id: subscriber.id)}
 
   describe 'successfully accepted' do
     before do
@@ -33,8 +34,8 @@ RSpec.describe 'PUT /api/v1/biddings', type: :request do
       expect(response).to have_http_status 200
     end
 
-    it 'should return success message' do
-      expect(response_json['message']).to eq 'You have accepted this bid!'
+    it "should return success message" do
+      expect(response_json['message']).to eq "You have accepted a bid from #{subscriber.email}"
     end
   end
 
@@ -49,8 +50,8 @@ RSpec.describe 'PUT /api/v1/biddings', type: :request do
       expect(response).to have_http_status 200
     end
 
-    it 'should return success message' do
-      expect(response_json['message']).to eq 'You have rejected this bid!'
+    it "should return success message" do
+      expect(response_json['message']).to eq "You have rejected a bid from #{subscriber.email}"
     end
   end
 

@@ -12,7 +12,8 @@ Rails.application.routes.draw do
       end
 
       namespace :account do
-        resources :listings, only: %i[index show], constraints: { format: 'json' }
+        resources :listings, only: %i[index show update], constraints: { format: 'json' }
+        resources :biddings, only: [:index], constraints: { format: 'json' }
       end
     end
   end
