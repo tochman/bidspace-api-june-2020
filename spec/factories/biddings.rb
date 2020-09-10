@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :bidding do
     bid { 500 }
-    association :listing, factory: :listing
+    listing
     status { 'pending' }
+    user
   end
 end
