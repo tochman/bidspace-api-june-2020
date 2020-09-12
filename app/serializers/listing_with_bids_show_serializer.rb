@@ -1,13 +1,13 @@
 class ListingWithBidsShowSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
-  attributes :id, :category, :lead, :scene, :description, :address, :price, :biddings, :tenant
+  attributes :id, :category, :lead, :scene, :description, :address, :price, :biddings, :tenant, :landlord
   attribute :images
 
   def tenant
     if object.tenant_id
       tenant = User.find(object.tenant_id)
       ActiveModelSerializers::SerializableResource.new(
-        tenant, 
+        tenant,
         serializer: UserSerializer,
         adapter: :attributes
       )
@@ -19,11 +19,11 @@ class ListingWithBidsShowSerializer < ActiveModel::Serializer
   def biddings
     if object.tenant_id == nil
       ActiveModelSerializers::SerializableResource.new(
-        object.biddings, 
+        object.biddings,
         each_serializer: BiddingsSerializer,
         adapter: :attributes
       )
-    else 
+    else
       return nil
     end
   end
